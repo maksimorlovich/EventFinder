@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Favorites View Controller-->
+        <scene sceneID="gH8-K8-Ykv">
+            <objects>
+                <viewController storyboardIdentifier="FavoritesViewController" id="MXh-Cc-BkN" customClass="FavoritesViewController" customModule="EventFinder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Io6-uf-DZR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QPu-Kf-CgS">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="MXh-Cc-BkN" id="cv3-uV-hLO"/>
+                                    <outlet property="delegate" destination="MXh-Cc-BkN" id="5oo-r3-SYO"/>
+                                </connections>
+                            </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="WGQ-dV-xQ4">
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="QPu-Kf-CgS" firstAttribute="top" secondItem="qfb-N7-9lJ" secondAttribute="top" id="8UV-ja-52K"/>
+                            <constraint firstItem="WGQ-dV-xQ4" firstAttribute="centerX" secondItem="Io6-uf-DZR" secondAttribute="centerX" id="KRR-yl-cyV"/>
+                            <constraint firstItem="WGQ-dV-xQ4" firstAttribute="centerY" secondItem="Io6-uf-DZR" secondAttribute="centerY" id="LQf-En-JmC"/>
+                            <constraint firstItem="QPu-Kf-CgS" firstAttribute="leading" secondItem="qfb-N7-9lJ" secondAttribute="leading" id="SFd-mp-bVQ"/>
+                            <constraint firstItem="qfb-N7-9lJ" firstAttribute="trailing" secondItem="QPu-Kf-CgS" secondAttribute="trailing" id="baf-ig-pqS"/>
+                            <constraint firstItem="qfb-N7-9lJ" firstAttribute="bottom" secondItem="QPu-Kf-CgS" secondAttribute="bottom" id="iK0-Ha-ff5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="qfb-N7-9lJ"/>
+                    </view>
+                    <connections>
+                        <outlet property="loadingIndicatorView" destination="WGQ-dV-xQ4" id="mOg-j3-w4M"/>
+                        <outlet property="tableView" destination="QPu-Kf-CgS" id="0N2-xf-Mag"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Sw-CA-43M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
