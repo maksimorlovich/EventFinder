@@ -37,6 +37,8 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.allowsSelection = false
+        self.tableView.separatorStyle = .none
         self.tableView.tableFooterView = UIView()
         self.tableView.register(UINib(nibName: "SearchEventsCell", bundle: nil),
                                 forCellReuseIdentifier: "SearchEventsCell")
@@ -47,9 +49,8 @@ class FavoritesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
-        self.loadingIndicatorView.startAnimating()
         let _ = self.favoriteService.getFavoriteEvents(for: self.userId)
-            .then { faves -> Promise<[SeatGeekEvent]> in
+            .then { faves -> Promise<(events: [SeatGeekEvent], reload: Bool)> in
                 // Optimize for bandwidth and time by only downloading the favorite deltas
                 let newFavorites = Set(faves)
                 let currentFavorites = Set(self.events.map { $0.id })
@@ -59,35 +60,39 @@ class FavoritesViewController: UIViewController {
                 // Filter current events and check if anything needs to be downloaded
                 let filtered = self.events.filter { commonFavorites.contains($0.id) }
                 guard downloadFavorites.count > 0 else {
-                    return Promise.value(filtered)
+                    let reload = filtered.count != self.events.count
+                    return Promise.value((events: filtered, reload: reload))
                 }
                 
                 // Download new ones, and merge with filtered events
+                self.loadingIndicatorView.startAnimating()
                 return self.eventService.search(by: .ids(downloadFavorites),
                                                 perPage: downloadFavorites.count,
                                                 page: 1)
-                    .then { meta -> Promise<[SeatGeekEvent]> in
-                        Promise.value(meta.events + filtered)
+                    .then { meta -> Promise<(events: [SeatGeekEvent], reload: Bool)> in
+                        Promise.value((events: meta.events + filtered, reload: true))
                     }
             }
             .done { [weak self] in
-                guard let self = self else { return }
+                guard let self = self, $0.reload else { return }
                 let currentEventCount = self.events.count
-                self.events = $0.sorted(by: { $0.datetimeUtc < $1.datetimeUtc })
+                let newEvents = $0.events.sorted(by: { $0.datetimeUtc < $1.datetimeUtc })
                 
                 // When going from no favorites to some favorites, or favorites
                 // to no favorites, fade out tableview, then reload while it's invisible,
                 // then fade in
-                if  (currentEventCount == 0 && self.events.count != 0) ||
-                    (currentEventCount != 0 && self.events.count == 0) {
+                if  (currentEventCount == 0 && newEvents.count != 0) ||
+                    (currentEventCount != 0 && newEvents.count == 0) {
                     UIView.animate(.promise, duration: 0.25, options: .curveLinear,
                                    animations: { self.tableView.alpha = 0 })
                         .then { _ -> Guarantee<Bool> in
+                            self.events = newEvents
                             self.tableView.reloadData()
                             return UIView.animate(.promise, duration: 0.25, options: .curveLinear,
                                                   animations: { self.tableView.alpha = 1 })
                         }
                 } else {
+                    self.events = newEvents
                     self.tableView.reloadSections([0], with: .fade)
                 }
             }
