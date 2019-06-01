@@ -8,10 +8,10 @@
 import Foundation
 
 extension DateFormatter {
-    static let searchEventsFormatter : DateFormatter = {
-        let df = DateFormatter()
-        df.dateStyle = .medium
-        df.timeStyle = .short
-        return df
+    static let searchEventsFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
     }()
 }

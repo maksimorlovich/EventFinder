@@ -11,62 +11,63 @@ public typealias SeatGeekEventId = Int
 
 // Generated using this command:
 // curl -s -X GET 'https://api.seatgeek.com/2/taxonomies?client_id=MTQyNTcxNjN8MTU0NDA2NTkyNi42' | python -mjson.tool | grep "slug" | cut -f 4 -d "\"" | sort
+// swiftlint:disable:previous line_length
 // TODO: Write a script to convert snake_case to camelCase :)
 public enum SeatGeekEventType: String, Codable {
     case addon
-    case animal_sports
-    case auto_racing
+    case animalSports = "animal_sports"
+    case autoRacing = "auto_racing"
     case baseball
     case basketball
     case boxing
-    case broadway_tickets_national
+    case broadwayTicketsNational = "broadway_tickets_national"
     case circus
-    case cirque_du_soleil
+    case cirqueDuSoleil = "cirque_du_soleil"
     case classical
-    case classical_opera
-    case classical_orchestral_instrumental
-    case classical_vocal
-    case club_passes
+    case classicalOpera = "classical_opera"
+    case classicalOrchestralInstrumental = "classical_orchestral_instrumental"
+    case classicalVocal = "classical_vocal"
+    case clubPasses = "club_passes"
     case comedy
     case concert
     case concerts
-    case dance_performance_tour
-    case european_soccer
-    case extreme_sports
-    case f1
+    case dancePerformanceTour = "dance_performance_tour"
+    case europeanSoccer = "european_soccer"
+    case extremeSports = "extreme_sports"
+    case formula1 = "f1"
     case family
     case fighting
     case film
     case football
     case golf
     case hockey
-    case horse_racing
+    case horseRacing = "horse_racing"
     case indycar
-    case international_soccer
+    case internationalSoccer = "international_soccer"
     case literary
     case lpga
-    case minor_league_baseball
-    case minor_league_hockey
+    case minorLeagueBaseball = "minor_league_baseball"
+    case minorLeagueHockey = "minor_league_hockey"
     case mlb
     case mls
     case mma
-    case monster_truck
+    case monsterTruck = "monster_truck"
     case motocross
-    case music_festival
+    case musicFestival = "music_festival"
     case nascar
-    case nascar_nationwide
-    case nascar_sprintcup
+    case nascarNationwide = "nascar_nationwide"
+    case nascarSprintcup = "nascar_sprintcup"
     case nba
-    case nba_dleague
-    case ncaa_baseball
-    case ncaa_basketball
-    case ncaa_football
-    case ncaa_hockey
-    case ncaa_soccer
-    case ncaa_womens_basketball
+    case nbaDleague = "nba_dleague"
+    case ncaaBaseball = "ncaa_baseball"
+    case ncaaBasketball = "ncaa_basketball"
+    case ncaaFootball = "ncaa_football"
+    case ncaaHockey = "ncaa_hockey"
+    case ncaaSoccer = "ncaa_soccer"
+    case ncaaWomensBasketball = "ncaa_womens_basketball"
     case nfl
     case nhl
-    case olympic_sports
+    case olympicSports = "olympic_sports"
     case parking
     case pga
     case rodeo
@@ -74,9 +75,9 @@ public enum SeatGeekEventType: String, Codable {
     case sports
     case tennis
     case theater
-    case us_minor_league_soccer
+    case usMinorLeagueSoccer = "us_minor_league_soccer"
     case wnba
-    case world_cup
+    case worldCup = "world_cup"
     case wrestling
     case wwe
 }
@@ -88,7 +89,7 @@ public struct SeatGeekEventStats: Codable {
 }
 
 public struct SeatGeekEvent: Codable {
-    public let id: SeatGeekEventId
+    public let identifier: SeatGeekEventId
     public let stats: SeatGeekEventStats
     public let title: String
     public let type: SeatGeekEventType
@@ -97,4 +98,16 @@ public struct SeatGeekEvent: Codable {
     public let url: URL
     public let shortTitle: String
     public let datetimeUtc: Date
+    
+    private enum CodingKeys: String, CodingKey {
+        case identifier = "id"
+        case stats
+        case title
+        case type
+        case venue
+        case performers
+        case url
+        case shortTitle
+        case datetimeUtc
+    }
 }

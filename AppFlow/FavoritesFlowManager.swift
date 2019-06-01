@@ -11,7 +11,8 @@ import SeatGeekService
 import PromiseKit
 
 class FavoritesFlowManager: FlowManager {
-    private(set) lazy var mainViewController: UIViewController = UINavigationController(rootViewController: self.favoritesViewController)
+    private(set) lazy var mainViewController: UIViewController =
+        UINavigationController(rootViewController: self.favoritesViewController)
     
     private lazy var favoritesViewController = { () -> FavoritesViewController in
         let viewController = FavoritesViewController.instantiate()
@@ -52,7 +53,7 @@ class FavoritesFlowManager: FlowManager {
 extension FavoritesFlowManager: FavoritesViewControllerDelegate {
     func favorites(_ viewController: FavoritesViewController,
                    didSelectEvent event: SeatGeekEvent) {
-        let navigationController = self.mainViewController as! UINavigationController
+        guard let navigationController = self.mainViewController as? UINavigationController else { return }
         self.eventDetailsViewController.configure(with: event, favorite: true)
         navigationController.pushViewController(self.eventDetailsViewController, animated: true)
     }

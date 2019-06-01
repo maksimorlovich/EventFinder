@@ -11,7 +11,8 @@ import SeatGeekService
 import PromiseKit
 
 class SearchFlowManager: FlowManager {
-    private(set) lazy var mainViewController: UIViewController = UINavigationController(rootViewController: self.searchViewController)
+    private(set) lazy var mainViewController: UIViewController =
+        UINavigationController(rootViewController: self.searchViewController)
     
     private lazy var searchViewController = { () -> SearchEventsViewController in
         let viewController = SearchEventsViewController.instantiate()
@@ -53,7 +54,7 @@ extension SearchFlowManager: SearchEventsViewControllerDelegate {
     func searchEvents(_ viewController: SearchEventsViewController,
                       didSelectEvent event: SeatGeekEvent,
                       favorite: Bool) {
-        let navigationController = self.mainViewController as! UINavigationController
+        guard let navigationController = self.mainViewController as? UINavigationController else { return }
         self.eventDetailsViewController.configure(with: event, favorite: favorite)
         navigationController.pushViewController(self.eventDetailsViewController, animated: true)
     }

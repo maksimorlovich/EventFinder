@@ -9,7 +9,7 @@ import Foundation
 import PromiseKit
 import SQLite
 
-fileprivate enum FavoriteType: String {
+private enum FavoriteType: String {
     case event
     case venue
     case performer
@@ -27,9 +27,10 @@ extension FavoriteType: Value {
     }
 }
 
-fileprivate struct FavoritesTable {
+private struct FavoritesTable {
     let tableName: String = "favorites"
     
+    // swiftlint:disable:next identifier_name
     let id = Expression<Int>("id")
     let userId = Expression<UserID>("user_id")
     let identifier = Expression<Int>("identifier")
@@ -39,7 +40,7 @@ fileprivate struct FavoritesTable {
 public class SeatGeekFavoriteServiceSQL: SeatGeekFavoriteService {
     private static let dbVersion = 1
     
-    private var db: Connection
+    private var database: Connection
     private let filepath: String?
     private let favoritesTable = FavoritesTable()
     
@@ -47,13 +48,13 @@ public class SeatGeekFavoriteServiceSQL: SeatGeekFavoriteService {
         self.filepath = filepath
         
         if let path = filepath {
-            self.db = try Connection(path)
+            self.database = try Connection(path)
         } else {
-            self.db = try Connection(.inMemory)
+            self.database = try Connection(.inMemory)
         }
         
-        self.db.busyTimeout = 5
-        self.db.busyHandler({ tries in
+        self.database.busyTimeout = 5
+        self.database.busyHandler({ tries in
             if tries >= 3 {
                 return false
             }
@@ -72,12 +73,12 @@ public class SeatGeekFavoriteServiceSQL: SeatGeekFavoriteService {
                 let insert = table.insert(self.favoritesTable.userId <- userId,
                                           self.favoritesTable.identifier <- eventId,
                                           self.favoritesTable.type <- .event)
-                try self.db.run(insert)
+                try self.database.run(insert)
             } else {
                 let query = table.filter(userId == self.favoritesTable.userId &&
                                          eventId == self.favoritesTable.identifier &&
                                          .event == self.favoritesTable.type)
-                try self.db.run(query.delete())
+                try self.database.run(query.delete())
             }
             
             return Promise()
@@ -89,7 +90,7 @@ public class SeatGeekFavoriteServiceSQL: SeatGeekFavoriteService {
             let table = Table(self.favoritesTable.tableName)
             let query = table.filter(userId == self.favoritesTable.userId &&
                                      .event == self.favoritesTable.type)
-            let results = try self.db.prepare(query).map { row in
+            let results = try self.database.prepare(query).map { row in
                 row[self.favoritesTable.identifier]
             }
             
@@ -98,20 +99,20 @@ public class SeatGeekFavoriteServiceSQL: SeatGeekFavoriteService {
     }
     
     private func performMigrations() throws {
-        var userVersion = self.db.userVersion
+        var userVersion = self.database.userVersion
         while userVersion != SeatGeekFavoriteServiceSQL.dbVersion {
             if userVersion == 0 {
                 let table = Table(self.favoritesTable.tableName)
                 
-                try self.db.run(table.create { t in
-                    t.column(self.favoritesTable.id, primaryKey: .autoincrement)
-                    t.column(self.favoritesTable.userId)
-                    t.column(self.favoritesTable.identifier)
-                    t.column(self.favoritesTable.type)
+                try self.database.run(table.create { builder in
+                    builder.column(self.favoritesTable.id, primaryKey: .autoincrement)
+                    builder.column(self.favoritesTable.userId)
+                    builder.column(self.favoritesTable.identifier)
+                    builder.column(self.favoritesTable.type)
                 })
             }
             userVersion += 1
         }
-        self.db.userVersion = userVersion
+        self.database.userVersion = userVersion
     }
 }

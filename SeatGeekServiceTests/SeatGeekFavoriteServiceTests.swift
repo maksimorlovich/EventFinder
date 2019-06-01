@@ -12,10 +12,13 @@ class SeatGeekFavoriteServiceTests: XCTestCase {
     private let maksimUserId: UserID = "maksim.orlovich"
     
     func testGetFavoriteEventsEmptyDB() {
-        let favoriteService: SeatGeekFavoriteService = try! SeatGeekFavoriteServiceSQL()
+        guard let favoriteService: SeatGeekFavoriteService = try? SeatGeekFavoriteServiceSQL() else {
+            XCTFail("Failed to instantiate SeatGeekFavoriteServiceSQL")
+            return
+        }
         
-        let ex = expectation(description: "Get favorite events")
-        let _ = favoriteService.getFavoriteEvents(for: self.maksimUserId)
+        let expect = expectation(description: "Get favorite events")
+        favoriteService.getFavoriteEvents(for: self.maksimUserId)
             .done { favorites in
                 XCTAssertEqual(favorites.count, 0)
             }
@@ -23,17 +26,20 @@ class SeatGeekFavoriteServiceTests: XCTestCase {
                 XCTFail("Unexpected error: \(error)")
             }
             .finally {
-                ex.fulfill()
+                expect.fulfill()
             }
         
         waitForExpectations(timeout: 2)
     }
     
     func testAddThenFindFavoriteEvent() {
-        let favoriteService: SeatGeekFavoriteService = try! SeatGeekFavoriteServiceSQL()
+        guard let favoriteService: SeatGeekFavoriteService = try? SeatGeekFavoriteServiceSQL() else {
+            XCTFail("Failed to instantiate SeatGeekFavoriteServiceSQL")
+            return
+        }
         
-        let ex = expectation(description: "Add then find favorite event")
-        let _ = favoriteService.mark(favorite: true, event: 12345, for: self.maksimUserId)
+        let expect = expectation(description: "Add then find favorite event")
+        favoriteService.mark(favorite: true, event: 12345, for: self.maksimUserId)
             .then {
                 favoriteService.getFavoriteEvents(for: self.maksimUserId)
             }
@@ -49,7 +55,7 @@ class SeatGeekFavoriteServiceTests: XCTestCase {
                 XCTFail("Unexpected error: \(error)")
             }
             .finally {
-                ex.fulfill()
+                expect.fulfill()
             }
         
         waitForExpectations(timeout: 2)

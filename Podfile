@@ -3,6 +3,7 @@ use_frameworks!
 
 target 'EventFinder' do
   pod 'PromiseKit', '~> 6.0' 
+  pod 'SwiftLint'
 end
 
 target 'SeatGeekService' do

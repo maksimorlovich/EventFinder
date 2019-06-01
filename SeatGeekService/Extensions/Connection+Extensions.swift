@@ -8,6 +8,8 @@
 import Foundation
 import SQLite
 
+// swiftlint:disable force_try force_cast
+
 extension Connection {
     public var userVersion: Int32 {
         get { return Int32(try! scalar("PRAGMA user_version") as! Int64)}

@@ -24,7 +24,7 @@ public struct SeatGeekVenue: Codable {
     public let postalCode: String
     public let timezone: String?
     public let hasUpcomingEvents: Bool
-    public let id: SeatGeekVenueId
+    public let id: SeatGeekVenueId  // swiftlint:disable:this identifier_name
     public let city: String
     public let extendedAddress: String
     public let displayLocation: String

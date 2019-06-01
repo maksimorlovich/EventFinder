@@ -12,8 +12,17 @@ public typealias SeatGeekPerformerId = Int
 public struct SeatGeekPerformer: Codable {
     public let image: URL?
     public let primary: Bool?
-    public let id: SeatGeekPerformerId
+    public let identifier: SeatGeekPerformerId
     public let shortName: String
     public let homeVenueId: SeatGeekVenueId?
     public let name: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case image
+        case primary
+        case identifier = "id"
+        case shortName
+        case homeVenueId
+        case name
+    }
 }

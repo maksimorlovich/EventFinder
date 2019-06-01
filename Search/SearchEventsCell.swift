@@ -65,7 +65,7 @@ class SearchEventsCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.reuseNumber = self.reuseNumber + 1
+        self.reuseNumber += 1
         self.eventImageView.image = nil
         self.activityIndicatorView.startAnimating()
     }

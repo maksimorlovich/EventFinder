@@ -37,7 +37,7 @@ public class SeatGeekEventServiceLive: SeatGeekEventService {
         var params: [String: Any] = [
             "client_id": self.clientId,
             "per_page": perPage,
-            "page": page,
+            "page": page
         ]
         let emptyMeta = SeatGeekEventSearchResultMeta(geolocation: nil,
                                                       perPage: perPage,
@@ -58,15 +58,16 @@ public class SeatGeekEventServiceLive: SeatGeekEventService {
             params["lat"] = latitude
             params["lon"] = longitude
             
-        case .venue(let id):
-            params["venue.id"] = id
+        case .venue(let identifier):
+            params["venue.id"] = identifier
             
-        case .performer(let id):
-            params["performers.id"] = id
+        case .performer(let identifier):
+            params["performers.id"] = identifier
         }
         
         return
-            Alamofire.request(self.baseUrl, method: .get, parameters: params, encoding: URLEncoding.queryString).responseData()
+            Alamofire.request(self.baseUrl, method: .get, parameters: params,
+                              encoding: URLEncoding.queryString).responseData()
                 .then { (data, pmkresponse) -> Promise<SeatGeekEventSearchResult> in
                     if pmkresponse.response?.statusCode == 200 {
                         // Success - decode returned data

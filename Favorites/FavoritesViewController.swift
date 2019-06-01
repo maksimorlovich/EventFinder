@@ -9,7 +9,7 @@ import UIKit
 import PromiseKit
 import SeatGeekService
 
-protocol FavoritesViewControllerDelegate {
+protocol FavoritesViewControllerDelegate: class {
     func favorites(_ viewController: FavoritesViewController,
                    didSelectEvent event: SeatGeekEvent)
 }
@@ -24,7 +24,7 @@ class FavoritesViewController: UIViewController {
     var eventService: SeatGeekEventService!
     var favoriteService: SeatGeekFavoriteService!
     var userId: UserID!
-    var delegate: FavoritesViewControllerDelegate?
+    weak var delegate: FavoritesViewControllerDelegate?
     
     // Private variables
     private var events: [SeatGeekEvent] = [] {
@@ -49,16 +49,16 @@ class FavoritesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
-        let _ = self.favoriteService.getFavoriteEvents(for: self.userId)
+        self.favoriteService.getFavoriteEvents(for: self.userId)
             .then { faves -> Promise<(events: [SeatGeekEvent], reload: Bool)> in
                 // Optimize for bandwidth and time by only downloading the favorite deltas
                 let newFavorites = Set(faves)
-                let currentFavorites = Set(self.events.map { $0.id })
+                let currentFavorites = Set(self.events.map { $0.identifier })
                 let commonFavorites = newFavorites.intersection(currentFavorites)
                 let downloadFavorites = newFavorites.subtracting(commonFavorites).map { $0 }
                 
                 // Filter current events and check if anything needs to be downloaded
-                let filtered = self.events.filter { commonFavorites.contains($0.id) }
+                let filtered = self.events.filter { commonFavorites.contains($0.identifier) }
                 guard downloadFavorites.count > 0 else {
                     let reload = filtered.count != self.events.count
                     return Promise.value((events: filtered, reload: reload))
@@ -99,13 +99,16 @@ class FavoritesViewController: UIViewController {
             .ensure { [weak self] in
                 self?.loadingIndicatorView.stopAnimating()
             }
+            .cauterize()
     }
 }
 
 extension FavoritesViewController {
     class func instantiate() -> FavoritesViewController {
         let storyboard: UIStoryboard = UIStoryboard(name: "Favorites", bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: "FavoritesViewController") as! FavoritesViewController
+        let viewController = storyboard.instantiateViewController(withIdentifier: "FavoritesViewController")
+        // swiftlint:disable:next force_cast
+        return viewController as! FavoritesViewController
     }
 }
 
@@ -131,11 +134,10 @@ extension FavoritesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if self.events.count == 0 {
             // No favorites
-            let noFavoritesCell = tableView.dequeueReusableCell(withIdentifier: "FavoritesNoFavesCell") as! FavoritesNoFavesCell
-            return noFavoritesCell
+            return tableView.dequeueReusableCell(FavoritesNoFavesCell.self)
         } else {
             // Configure event cell
-            let eventCell = tableView.dequeueReusableCell(withIdentifier: "SearchEventsCell") as! SearchEventsCell
+            let eventCell = tableView.dequeueReusableCell(SearchEventsCell.self)
             let event = self.events[indexPath.row]
             eventCell.favorite = false
             eventCell.eventName = event.title

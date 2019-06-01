@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		D354646322A1C06F00764BD2 /* SwiftLint */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D354646622A1C07000764BD2 /* Build configuration list for PBXAggregateTarget "SwiftLint" */;
+			buildPhases = (
+				D354646722A1C07500764BD2 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = SwiftLint;
+			productName = SwiftLint;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		122737D228B738C499533B7F /* Pods_SeatGeekService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 943149B4481D80C83F267E33 /* Pods_SeatGeekService.framework */; };
 		648DDB0221B8CC18000EB914 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648DDB0121B8CC18000EB914 /* AppDelegate.swift */; };
@@ -42,6 +56,7 @@
 		D320FED921E1B51300380E07 /* SearchLoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D320FED821E1B51300380E07 /* SearchLoadingCell.xib */; };
 		D320FEDC21E2743800380E07 /* EventDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D320FEDB21E2743800380E07 /* EventDetails.storyboard */; };
 		D320FEDE21E279EF00380E07 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D320FEDD21E279EF00380E07 /* EventDetailsViewController.swift */; };
+		D354646B22A1CC2700764BD2 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D354646A22A1CC2700764BD2 /* UITableView+Extensions.swift */; };
 		D36B927E21E2BE390078DFC9 /* SearchFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B927D21E2BE390078DFC9 /* SearchFlowManager.swift */; };
 		D36B928021E2C40A0078DFC9 /* FlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B927F21E2C40A0078DFC9 /* FlowManager.swift */; };
 		D36B928221E2F21D0078DFC9 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B928121E2F21D0078DFC9 /* UIViewController+Extensions.swift */; };
@@ -74,6 +89,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 648DDB1721BA1CA2000EB914;
 			remoteInfo = SeatGeekService;
+		};
+		D3DE0F1E22A2F13000664EA1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 648DDAF621B8CC18000EB914 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D354646322A1C06F00764BD2;
+			remoteInfo = SwiftLint;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -136,6 +158,7 @@
 		D320FED821E1B51300380E07 /* SearchLoadingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchLoadingCell.xib; sourceTree = "<group>"; };
 		D320FEDB21E2743800380E07 /* EventDetails.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EventDetails.storyboard; sourceTree = "<group>"; };
 		D320FEDD21E279EF00380E07 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
+		D354646A22A1CC2700764BD2 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		D36B927D21E2BE390078DFC9 /* SearchFlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowManager.swift; sourceTree = "<group>"; };
 		D36B927F21E2C40A0078DFC9 /* FlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowManager.swift; sourceTree = "<group>"; };
 		D36B928121E2F21D0078DFC9 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -328,8 +351,9 @@
 			isa = PBXGroup;
 			children = (
 				D320FED421E1A49A00380E07 /* DateFormatter+Extensions.swift */,
-				D36B928121E2F21D0078DFC9 /* UIViewController+Extensions.swift */,
 				D3805EDF21E52A7800F67204 /* UIImage+Extensions.swift */,
+				D354646A22A1CC2700764BD2 /* UITableView+Extensions.swift */,
+				D36B928121E2F21D0078DFC9 /* UIViewController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -391,6 +415,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D3DE0F1F22A2F13000664EA1 /* PBXTargetDependency */,
 				648DDB2C21BA1CA2000EB914 /* PBXTargetDependency */,
 			);
 			name = EventFinder;
@@ -445,18 +470,23 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				TargetAttributes = {
 					648DDAFD21B8CC18000EB914 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					648DDB1721BA1CA2000EB914 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 					648DDB1F21BA1CA2000EB914 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 648DDAFD21B8CC18000EB914;
+					};
+					D354646322A1C06F00764BD2 = {
+						CreatedOnToolsVersion = 10.2.1;
 					};
 				};
 			};
@@ -476,6 +506,7 @@
 				648DDAFD21B8CC18000EB914 /* EventFinder */,
 				648DDB1721BA1CA2000EB914 /* SeatGeekService */,
 				648DDB1F21BA1CA2000EB914 /* SeatGeekServiceTests */,
+				D354646322A1C06F00764BD2 /* SwiftLint */,
 			);
 		};
 /* End PBXProject section */
@@ -571,6 +602,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D354646722A1C07500764BD2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/SwiftLint/swiftlint\" --config \"${SRCROOT}/.swiftlint.yaml\"\n";
+		};
 		DD9E2CECDCF5E1AB6FC2B66F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -622,6 +670,7 @@
 				D320FECF21E14E0C00380E07 /* SearchEventsCell.swift in Sources */,
 				D3805EDA21E3C97500F67204 /* FavoritesFlowManager.swift in Sources */,
 				D36B927E21E2BE390078DFC9 /* SearchFlowManager.swift in Sources */,
+				D354646B22A1CC2700764BD2 /* UITableView+Extensions.swift in Sources */,
 				D320FED521E1A49A00380E07 /* DateFormatter+Extensions.swift in Sources */,
 				D36B928221E2F21D0078DFC9 /* UIViewController+Extensions.swift in Sources */,
 				648DDB0221B8CC18000EB914 /* AppDelegate.swift in Sources */,
@@ -683,6 +732,11 @@
 			isa = PBXTargetDependency;
 			target = 648DDB1721BA1CA2000EB914 /* SeatGeekService */;
 			targetProxy = 648DDB2B21BA1CA2000EB914 /* PBXContainerItemProxy */;
+		};
+		D3DE0F1F22A2F13000664EA1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D354646322A1C06F00764BD2 /* SwiftLint */;
+			targetProxy = D3DE0F1E22A2F13000664EA1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -749,7 +803,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -804,7 +858,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -832,7 +886,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.maksimorlovich.eventfinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -855,7 +909,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.maksimorlovich.eventfinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -865,7 +919,7 @@
 			baseConfigurationReference = 568B1A4FC7CD7937B15A1FA8 /* Pods-SeatGeekService.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -885,7 +939,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -897,7 +951,7 @@
 			baseConfigurationReference = 02BA932916824B336483241D /* Pods-SeatGeekService.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -916,7 +970,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.maksimorlovich.SeatGeekService;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -937,7 +991,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.maksimorlovich.SeatGeekServiceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EventFinder.app/EventFinder";
 			};
@@ -957,9 +1011,25 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.maksimorlovich.SeatGeekServiceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EventFinder.app/EventFinder";
+			};
+			name = Release;
+		};
+		D354646422A1C07000764BD2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D354646522A1C07000764BD2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -998,6 +1068,15 @@
 			buildConfigurations = (
 				648DDB3421BA1CA2000EB914 /* Debug */,
 				648DDB3521BA1CA2000EB914 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D354646622A1C07000764BD2 /* Build configuration list for PBXAggregateTarget "SwiftLint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D354646422A1C07000764BD2 /* Debug */,
+				D354646522A1C07000764BD2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

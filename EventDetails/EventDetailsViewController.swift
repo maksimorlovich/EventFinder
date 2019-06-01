@@ -28,7 +28,7 @@ class EventDetailsViewController: UIViewController {
     
     // Private variables
     private var eventId: SeatGeekEventId = 0
-    private var ticketUrl: URL? = nil
+    private var ticketUrl: URL?
     private var favorite: Bool = false {
         didSet {
             if self.favorite {
@@ -52,11 +52,12 @@ class EventDetailsViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         
         // Refresh, in case the favorite status was changed elsewhere
-        let _ = self.favoriteService
+        self.favoriteService
             .getFavoriteEvents(for: self.userId)
             .done {
                 self.favorite = $0.contains(self.eventId)
             }
+            .cauterize()
     }
     
     func configure(with event: SeatGeekEvent, favorite: Bool) {
@@ -66,14 +67,15 @@ class EventDetailsViewController: UIViewController {
         self.venueNameLabel.text = event.venue.name
         self.cityLabel.text = event.venue.displayLocation
         self.priceRangeLabel.text = "$\(event.stats.lowestPrice ?? 0) - $\(event.stats.highestPrice ?? 999)"
-        self.eventId = event.id
+        self.eventId = event.identifier
         self.favorite = favorite
         self.ticketUrl = event.url
         if let imageUrl = event.performers.first?.image {
-            let _ = self.imageManager.download(image: imageUrl)
+            self.imageManager.download(image: imageUrl)
                 .done { [weak self] image in
                     self?.eventImageView.image = image
                 }
+                .cauterize()
         } else {
             self.eventImageView.image = #imageLiteral(resourceName: "camera")
         }
@@ -83,7 +85,7 @@ class EventDetailsViewController: UIViewController {
         self.isNavigationBarUserInteractionEnabled = false
         self.isTabBarUserInteractionEnabled = false
         let newFavorite = !self.favorite
-        let _ = self.favoriteService
+        self.favoriteService
             .mark(favorite: newFavorite, event: self.eventId, for: self.userId)
             .done {
                 self.favorite = newFavorite
@@ -92,6 +94,7 @@ class EventDetailsViewController: UIViewController {
                 self.isNavigationBarUserInteractionEnabled = true
                 self.isTabBarUserInteractionEnabled = true
             }
+            .cauterize()
     }
     
     @IBAction private func buyTickets() {
@@ -103,6 +106,8 @@ class EventDetailsViewController: UIViewController {
 extension EventDetailsViewController {
     class func instantiate() -> EventDetailsViewController {
         let storyboard: UIStoryboard = UIStoryboard(name: "EventDetails", bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: "EventDetailsViewController") as! EventDetailsViewController
+        let viewController = storyboard.instantiateViewController(withIdentifier: "EventDetailsViewController")
+        // swiftlint:disable:next force_cast
+        return viewController as! EventDetailsViewController
     }
 }

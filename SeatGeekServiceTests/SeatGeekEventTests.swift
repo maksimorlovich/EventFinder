@@ -9,6 +9,8 @@ import XCTest
 import Foundation
 @testable import SeatGeekService
 
+// swiftlint:disable function_body_length type_body_length line_length
+
 class SeatGeekEventTests: XCTestCase {
     func testBasicDecoding() {
         let eventJSON =
@@ -334,14 +336,14 @@ class SeatGeekEventTests: XCTestCase {
             XCTAssertEqual(event.shortTitle, "Spring Training: Rangers at Royals")
             XCTAssertEqual(event.type, .mlb)
             XCTAssertEqual(event.title, "Spring Training: Texas Rangers at Kansas City Royals")
-            XCTAssertEqual(event.id, 4614875)
+            XCTAssertEqual(event.identifier, 4614875)
             XCTAssertEqual(event.performers.count, 3)
             
             XCTAssertEqual(event.stats.averagePrice, 53)
             XCTAssertEqual(event.stats.lowestPrice, 18)
             XCTAssertEqual(event.stats.highestPrice, 100)
             
-            if let texasRangers = event.performers.filter({ $0.id == 16 }).first {
+            if let texasRangers = event.performers.filter({ $0.identifier == 16 }).first {
                 XCTAssertEqual(texasRangers.name, "Texas Rangers")
                 XCTAssertEqual(texasRangers.shortName, "Rangers")
                 XCTAssertEqual(texasRangers.homeVenueId, 16)

@@ -8,7 +8,7 @@
 import UIKit
 import SeatGeekService
 
-protocol SearchEventsViewControllerDelegate {
+protocol SearchEventsViewControllerDelegate: class {
     func searchEvents(_ viewController: SearchEventsViewController,
                       didSelectEvent event: SeatGeekEvent,
                       favorite: Bool)
@@ -27,7 +27,7 @@ class SearchEventsViewController: UIViewController {
     var eventService: SeatGeekEventService!
     var favoriteService: SeatGeekFavoriteService!
     var userId: UserID!
-    var delegate: SearchEventsViewControllerDelegate?
+    weak var delegate: SearchEventsViewControllerDelegate?
     
     // Private variables
     private var meta: SeatGeekEventSearchResultMeta!
@@ -51,7 +51,7 @@ class SearchEventsViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         
         // Refresh, in case the favorite status was changed elsewhere
-        let _ = self.favoriteService
+        self.favoriteService
             .getFavoriteEvents(for: self.userId)
             .done { [weak self] in
                 guard let self = self else { return }
@@ -60,6 +60,7 @@ class SearchEventsViewController: UIViewController {
                     self.tableView.reloadRows(at: visiblePaths, with: .none)
                 }
             }
+            .cauterize()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -77,7 +78,9 @@ extension SearchEventsViewController {
 extension SearchEventsViewController {
     class func instantiate() -> SearchEventsViewController {
         let storyboard: UIStoryboard = UIStoryboard(name: "Search", bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: "SearchEventsViewController") as! SearchEventsViewController
+        let viewController = storyboard.instantiateViewController(withIdentifier: "SearchEventsViewController")
+        // swiftlint:disable:next force_cast
+        return viewController as! SearchEventsViewController
     }
 }
 
@@ -85,25 +88,24 @@ extension SearchEventsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // Handle the loading cell
-        guard indexPath.row < self.events.count else {
+        guard indexPath.row < self.events.count,
+            let cell = self.tableView.cellForRow(at: indexPath) as? SearchEventsCell else {
             return UISwipeActionsConfiguration(actions: [])
         }
         
         let event = self.events[indexPath.row]
-        let isFavorite = self.favorites.contains(event.id)
-        let cell = self.tableView.cellForRow(at: indexPath) as! SearchEventsCell
+        let isFavorite = self.favorites.contains(event.identifier)
         let action = UIContextualAction(style: .normal,
-                                        title: isFavorite ? "Unfavorite" : "Favorite")
-            { (_, view, completionHandler ) in
+                                        title: isFavorite ? "Unfavorite" : "Favorite") { (_, _, completionHandler ) in
                 self.favoriteService
                     // Mark as (un)favorite
-                    .mark(favorite: !isFavorite, event: event.id, for: self.userId)
+                    .mark(favorite: !isFavorite, event: event.identifier, for: self.userId)
                     // Refresh UI to reflect new favorite
                     .done {
                         if isFavorite {
-                            self.favorites.remove(event.id)
+                            self.favorites.remove(event.identifier)
                         } else {
-                            self.favorites.insert(event.id)
+                            self.favorites.insert(event.identifier)
                         }
                         self.tableView.beginUpdates()
                         cell.favorite = !isFavorite
@@ -126,7 +128,7 @@ extension SearchEventsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // When the last row (loading cell) is about to be displayed, start downloading next page of results
         guard indexPath.row == self.events.count else { return }
-        let _ = self.eventService.search(events: self.searchBar.text!,
+        self.eventService.search(events: self.searchBar.text!,
                                          perPage: SearchEventsViewController.searchResultsPerPage,
                                          page: self.meta.page + 1)
             .done { [weak self] result in
@@ -154,7 +156,7 @@ extension SearchEventsViewController: UITableViewDelegate {
         let event = self.events[indexPath.row]
         self.delegate?.searchEvents(self,
                                     didSelectEvent: event,
-                                    favorite: self.favorites.contains(event.id))
+                                    favorite: self.favorites.contains(event.identifier))
     }
 }
 
@@ -167,13 +169,12 @@ extension SearchEventsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == self.events.count {
             // This is a loading spinner cell
-            let loadingCell = tableView.dequeueReusableCell(withIdentifier: "SearchLoadingCell") as! SearchLoadingCell
-            return loadingCell
+            return tableView.dequeueReusableCell(SearchLoadingCell.self)
         } else {
             // This is an event cell, configure it
-            let eventCell = tableView.dequeueReusableCell(withIdentifier: "SearchEventsCell") as! SearchEventsCell
+            let eventCell = tableView.dequeueReusableCell(SearchEventsCell.self)
             let event = self.events[indexPath.row]
-            eventCell.favorite = self.favorites.contains(event.id)
+            eventCell.favorite = self.favorites.contains(event.identifier)
             eventCell.eventName = event.title
             eventCell.eventCity = event.venue.displayLocation
             eventCell.eventDateTime = DateFormatter.searchEventsFormatter.string(from: event.datetimeUtc)
@@ -203,7 +204,7 @@ extension SearchEventsViewController: UISearchBarDelegate {
         }
         
         self.loadingIndicatorView.startAnimating()
-        let _ = self.eventService.search(events: searchText,
+        self.eventService.search(events: searchText,
                                          perPage: SearchEventsViewController.searchResultsPerPage,
                                          page: 1)
             .done { [weak self] result in
@@ -224,7 +225,7 @@ extension SearchEventsViewController: UISearchBarDelegate {
                     self.loadingIndicatorView.stopAnimating()
                 }
             }
-            .catch { [weak self] error in
+            .catch { [weak self] _ in
                 self?.loadingIndicatorView.stopAnimating()
             }
     }
