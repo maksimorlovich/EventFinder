@@ -28,6 +28,7 @@ EventFinder is an iOS Application for searching sporting events, concerts, etc u
 - PromiseKit: abstracting asynchronous operations
 - Alamofire: networking
 - SQLite.swift: storing favorites for persistence
+- XCoordinator: navigation framework based on the Coordinator pattern
 
 ## Screenshots
 ![Search](https://raw.githubusercontent.com/maksimorlovich/EventFinder/master/search.png)
