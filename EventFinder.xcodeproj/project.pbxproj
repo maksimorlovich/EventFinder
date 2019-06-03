@@ -57,15 +57,15 @@
 		D320FEDC21E2743800380E07 /* EventDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D320FEDB21E2743800380E07 /* EventDetails.storyboard */; };
 		D320FEDE21E279EF00380E07 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D320FEDD21E279EF00380E07 /* EventDetailsViewController.swift */; };
 		D354646B22A1CC2700764BD2 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D354646A22A1CC2700764BD2 /* UITableView+Extensions.swift */; };
-		D36B927E21E2BE390078DFC9 /* SearchFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B927D21E2BE390078DFC9 /* SearchFlowManager.swift */; };
-		D36B928021E2C40A0078DFC9 /* FlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B927F21E2C40A0078DFC9 /* FlowManager.swift */; };
 		D36B928221E2F21D0078DFC9 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B928121E2F21D0078DFC9 /* UIViewController+Extensions.swift */; };
 		D3805ED621E3C73800F67204 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3805ED521E3C73800F67204 /* FavoritesViewController.swift */; };
 		D3805ED821E3C74500F67204 /* Favorites.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3805ED721E3C74500F67204 /* Favorites.storyboard */; };
-		D3805EDA21E3C97500F67204 /* FavoritesFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3805ED921E3C97500F67204 /* FavoritesFlowManager.swift */; };
 		D3805EDC21E46F8C00F67204 /* FavoritesNoFavesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3805EDB21E46F8C00F67204 /* FavoritesNoFavesCell.swift */; };
 		D3805EDE21E46FB600F67204 /* FavoritesNoFavesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3805EDD21E46FB600F67204 /* FavoritesNoFavesCell.xib */; };
 		D3805EE021E52A7900F67204 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3805EDF21E52A7800F67204 /* UIImage+Extensions.swift */; };
+		D3DE0F2622A4CB1200664EA1 /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DE0F2522A4CB1200664EA1 /* SearchCoordinator.swift */; };
+		D3DE0F2822A57BCD00664EA1 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DE0F2722A57BCD00664EA1 /* MainCoordinator.swift */; };
+		D3DE0F2A22A57C6200664EA1 /* FavoritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DE0F2922A57C6200664EA1 /* FavoritesCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,15 +159,15 @@
 		D320FEDB21E2743800380E07 /* EventDetails.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EventDetails.storyboard; sourceTree = "<group>"; };
 		D320FEDD21E279EF00380E07 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
 		D354646A22A1CC2700764BD2 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
-		D36B927D21E2BE390078DFC9 /* SearchFlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowManager.swift; sourceTree = "<group>"; };
-		D36B927F21E2C40A0078DFC9 /* FlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowManager.swift; sourceTree = "<group>"; };
 		D36B928121E2F21D0078DFC9 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		D3805ED521E3C73800F67204 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		D3805ED721E3C74500F67204 /* Favorites.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Favorites.storyboard; sourceTree = "<group>"; };
-		D3805ED921E3C97500F67204 /* FavoritesFlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesFlowManager.swift; sourceTree = "<group>"; };
 		D3805EDB21E46F8C00F67204 /* FavoritesNoFavesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesNoFavesCell.swift; sourceTree = "<group>"; };
 		D3805EDD21E46FB600F67204 /* FavoritesNoFavesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoritesNoFavesCell.xib; sourceTree = "<group>"; };
 		D3805EDF21E52A7800F67204 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		D3DE0F2522A4CB1200664EA1 /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
+		D3DE0F2722A57BCD00664EA1 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		D3DE0F2922A57C6200664EA1 /* FavoritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,7 +203,7 @@
 		648DDAF521B8CC18000EB914 = {
 			isa = PBXGroup;
 			children = (
-				D36B927C21E2BE140078DFC9 /* AppFlow */,
+				D3DE0F2422A4CAE100664EA1 /* AppCoordinators */,
 				D320FEC721E1465800380E07 /* AppUtilities */,
 				D320FEDA21E2730F00380E07 /* EventDetails */,
 				648DDB0021B8CC18000EB914 /* EventFinder */,
@@ -367,16 +367,6 @@
 			path = EventDetails;
 			sourceTree = "<group>";
 		};
-		D36B927C21E2BE140078DFC9 /* AppFlow */ = {
-			isa = PBXGroup;
-			children = (
-				D36B927F21E2C40A0078DFC9 /* FlowManager.swift */,
-				D36B927D21E2BE390078DFC9 /* SearchFlowManager.swift */,
-				D3805ED921E3C97500F67204 /* FavoritesFlowManager.swift */,
-			);
-			path = AppFlow;
-			sourceTree = "<group>";
-		};
 		D3805ED421E3C70C00F67204 /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,6 +376,16 @@
 				D3805ED521E3C73800F67204 /* FavoritesViewController.swift */,
 			);
 			path = Favorites;
+			sourceTree = "<group>";
+		};
+		D3DE0F2422A4CAE100664EA1 /* AppCoordinators */ = {
+			isa = PBXGroup;
+			children = (
+				D3DE0F2922A57C6200664EA1 /* FavoritesCoordinator.swift */,
+				D3DE0F2722A57BCD00664EA1 /* MainCoordinator.swift */,
+				D3DE0F2522A4CB1200664EA1 /* SearchCoordinator.swift */,
+			);
+			path = AppCoordinators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -607,11 +607,7 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-			);
-			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
@@ -645,6 +641,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-EventFinder/Pods-EventFinder-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/XCoordinator/XCoordinator.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit.default-Alamofire/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
@@ -652,6 +649,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCoordinator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 			);
@@ -668,17 +666,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				D320FECF21E14E0C00380E07 /* SearchEventsCell.swift in Sources */,
-				D3805EDA21E3C97500F67204 /* FavoritesFlowManager.swift in Sources */,
-				D36B927E21E2BE390078DFC9 /* SearchFlowManager.swift in Sources */,
+				D3DE0F2A22A57C6200664EA1 /* FavoritesCoordinator.swift in Sources */,
 				D354646B22A1CC2700764BD2 /* UITableView+Extensions.swift in Sources */,
 				D320FED521E1A49A00380E07 /* DateFormatter+Extensions.swift in Sources */,
 				D36B928221E2F21D0078DFC9 /* UIViewController+Extensions.swift in Sources */,
 				648DDB0221B8CC18000EB914 /* AppDelegate.swift in Sources */,
 				D320FECB21E149AB00380E07 /* AppError.swift in Sources */,
+				D3DE0F2622A4CB1200664EA1 /* SearchCoordinator.swift in Sources */,
 				D320FEC621E0FFC600380E07 /* SearchEventsViewController.swift in Sources */,
 				D3805EDC21E46F8C00F67204 /* FavoritesNoFavesCell.swift in Sources */,
 				D320FEDE21E279EF00380E07 /* EventDetailsViewController.swift in Sources */,
-				D36B928021E2C40A0078DFC9 /* FlowManager.swift in Sources */,
+				D3DE0F2822A57BCD00664EA1 /* MainCoordinator.swift in Sources */,
 				D320FED721E1B4E100380E07 /* SearchLoadingCell.swift in Sources */,
 				D3805EE021E52A7900F67204 /* UIImage+Extensions.swift in Sources */,
 				D3805ED621E3C73800F67204 /* FavoritesViewController.swift in Sources */,

@@ -25,27 +25,12 @@ class EventDetailsViewController: UIViewController {
     var imageManager: ImageManager!
     var favoriteService: SeatGeekFavoriteService!
     var userId: UserID!
+    var event: SeatGeekEvent!
+    var favorite: Bool = false
     
     // Private variables
     private var eventId: SeatGeekEventId = 0
     private var ticketUrl: URL?
-    private var favorite: Bool = false {
-        didSet {
-            if self.favorite {
-                self.favoritesBarButtonItem.image = #imageLiteral(resourceName: "filledHeart")
-            } else {
-                self.favoritesBarButtonItem.image = #imageLiteral(resourceName: "hollowHeart")
-            }
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let color = UIColor(red: 0, green: 128.0/255.0, blue: 0, alpha: 1)
-        let image = UIImage.image(with: color, size: CGSize(width: 1, height: 1))
-        self.buyTicketsButton.setBackgroundImage(image, for: .normal)
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -56,21 +41,27 @@ class EventDetailsViewController: UIViewController {
             .getFavoriteEvents(for: self.userId)
             .done {
                 self.favorite = $0.contains(self.eventId)
+                self.redrawFavorite()
             }
             .cauterize()
     }
     
-    func configure(with event: SeatGeekEvent, favorite: Bool) {
-        self.title = event.shortTitle
-        self.fullTitleLabel.text = event.title
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let color = UIColor(red: 0, green: 128.0/255.0, blue: 0, alpha: 1)
+        let image = UIImage.image(with: color, size: CGSize(width: 1, height: 1))
+        self.buyTicketsButton.setBackgroundImage(image, for: .normal)
+        self.title = self.event.shortTitle
+        self.fullTitleLabel.text = self.event.title
         self.dateTimeLabel.text = DateFormatter.searchEventsFormatter.string(from: event.datetimeUtc)
-        self.venueNameLabel.text = event.venue.name
-        self.cityLabel.text = event.venue.displayLocation
-        self.priceRangeLabel.text = "$\(event.stats.lowestPrice ?? 0) - $\(event.stats.highestPrice ?? 999)"
-        self.eventId = event.identifier
-        self.favorite = favorite
-        self.ticketUrl = event.url
-        if let imageUrl = event.performers.first?.image {
+        self.venueNameLabel.text = self.event.venue.name
+        self.cityLabel.text = self.event.venue.displayLocation
+        self.priceRangeLabel.text = "$\(self.event.stats.lowestPrice ?? 0) - $\(self.event.stats.highestPrice ?? 999)"
+        self.eventId = self.event.identifier
+        self.redrawFavorite()
+        self.ticketUrl = self.event.url
+        if let imageUrl = self.event.performers.first?.image {
             self.imageManager.download(image: imageUrl)
                 .done { [weak self] image in
                     self?.eventImageView.image = image
@@ -78,6 +69,14 @@ class EventDetailsViewController: UIViewController {
                 .cauterize()
         } else {
             self.eventImageView.image = #imageLiteral(resourceName: "camera")
+        }
+    }
+    
+    private func redrawFavorite() {
+        if self.favorite {
+            self.favoritesBarButtonItem.image = #imageLiteral(resourceName: "filledHeart")
+        } else {
+            self.favoritesBarButtonItem.image = #imageLiteral(resourceName: "hollowHeart")
         }
     }
     
@@ -89,6 +88,7 @@ class EventDetailsViewController: UIViewController {
             .mark(favorite: newFavorite, event: self.eventId, for: self.userId)
             .done {
                 self.favorite = newFavorite
+                self.redrawFavorite()
             }
             .ensure {
                 self.isNavigationBarUserInteractionEnabled = true

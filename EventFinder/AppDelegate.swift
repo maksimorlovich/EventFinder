@@ -12,9 +12,8 @@ import SeatGeekService
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var searchFlow: SearchFlowManager!
-    var favoritesFlow: FavoritesFlowManager!
     let userId: UserID = "guest"
+    var mainCoordinator: MainCoordinator!
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -30,31 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let eventService = SeatGeekEventServiceLive(clientId: "MTQyNTcxNjN8MTU0NDA2NTkyNi42")
         let imageManager = ImageManager()
         
-        // Setup flows
-        self.searchFlow = SearchFlowManager(
-            eventService: eventService,
-            favoriteService: favoriteService,
-            imageManager: imageManager,
-            userId: self.userId)
-        
-        self.favoritesFlow = FavoritesFlowManager(
-            eventService: eventService,
-            favoriteService: favoriteService,
-            imageManager: imageManager,
-            userId: self.userId)
-        
-        // Setup UI
-        let searchFlowViewController = self.searchFlow.mainViewController
-        searchFlowViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-        let favoritesViewController = self.favoritesFlow.mainViewController
-        favoritesViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [searchFlowViewController, favoritesViewController]
-        tabBarController.modalTransitionStyle = .crossDissolve
-        
-        // And present
-        self.window?.rootViewController = tabBarController
-        self.window?.makeKeyAndVisible()
+        self.mainCoordinator = MainCoordinator(
+            eventService: eventService, favoriteService: favoriteService,
+            imageManager: imageManager, userId: self.userId)
+        self.mainCoordinator.anyRouter.setRoot(for: self.window!)
         
         return true
     }
