@@ -15,6 +15,8 @@ protocol SearchEventsViewControllerDelegate: class {
 }
 
 class SearchEventsViewController: UIViewController {
+    // Constants
+    private static let searchDelayThreshold: TimeInterval = 0.25
     private static let searchResultsPerPage = 25
     
     // UI elements
@@ -35,6 +37,7 @@ class SearchEventsViewController: UIViewController {
     private var lastIssuedSearchIndex = 0
     private var displayedSearchIndex = 0
     private var favorites: Set<SeatGeekEventId> = Set()
+    private var searchKickoffTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,8 +59,12 @@ class SearchEventsViewController: UIViewController {
             .done { [weak self] in
                 guard let self = self else { return }
                 self.favorites = Set($0)
-                if let visiblePaths = self.tableView.indexPathsForVisibleRows, visiblePaths.count > 0 {
-                    self.tableView.reloadRows(at: visiblePaths, with: .none)
+
+                self.tableView.visibleCells.forEach { cell in
+                    guard let eventCell = cell as? SearchEventsCell,
+                        let indexPath = self.tableView.indexPath(for: eventCell) else { return }
+
+                    eventCell.favorite = self.favorites.contains(self.events[indexPath.row].identifier)
                 }
             }
             .cauterize()
@@ -92,7 +99,7 @@ extension SearchEventsViewController: UITableViewDelegate {
             let cell = self.tableView.cellForRow(at: indexPath) as? SearchEventsCell else {
             return UISwipeActionsConfiguration(actions: [])
         }
-        
+
         let event = self.events[indexPath.row]
         let isFavorite = self.favorites.contains(event.identifier)
         let action = UIContextualAction(style: .normal,
@@ -107,9 +114,9 @@ extension SearchEventsViewController: UITableViewDelegate {
                         } else {
                             self.favorites.insert(event.identifier)
                         }
-                        self.tableView.beginUpdates()
+
                         cell.favorite = !isFavorite
-                        self.tableView.endUpdates()
+
                         completionHandler(true)
                     }
                     // Do nothing in case of an error
@@ -196,38 +203,44 @@ extension SearchEventsViewController: UISearchBarDelegate {
         // On empty string search, clear out the table view
         guard !searchText.isEmpty else {
             self.displayedSearchIndex = searchIndex
+            self.searchKickoffTimer?.invalidate()
             self.meta = nil
             self.events = []
             self.loadingIndicatorView.stopAnimating()
             self.tableView.reloadData()
             return
         }
-        
-        self.loadingIndicatorView.startAnimating()
-        self.eventService.search(events: searchText,
-                                         perPage: SearchEventsViewController.searchResultsPerPage,
-                                         page: 1)
-            .done { [weak self] result in
-                // Make sure the view controller is still alive
-                guard let self = self else { return }
-                // Since search events may come back out of order, ignore older events
-                guard searchIndex > self.displayedSearchIndex else { return }
-                
-                self.displayedSearchIndex = searchIndex
-                self.meta = result.meta
-                self.events = result.events
-                
-                // Refresh the table
-                self.tableView.reloadData()
-                
-                // Loading is complete when last issued search index matches displayed search index
-                if self.lastIssuedSearchIndex == self.displayedSearchIndex {
-                    self.loadingIndicatorView.stopAnimating()
+
+        self.searchKickoffTimer?.invalidate()
+        self.searchKickoffTimer = Timer.scheduledTimer(withTimeInterval: SearchEventsViewController.searchDelayThreshold,
+                                                       repeats: false) { [weak self] _ in
+            guard let self = self, searchIndex >= self.lastIssuedSearchIndex else { return }
+            self.loadingIndicatorView.startAnimating()
+            self.eventService.search(events: searchText,
+                                             perPage: SearchEventsViewController.searchResultsPerPage,
+                                             page: 1)
+                .done { [weak self] result in
+                    // Make sure the view controller is still alive
+                    guard let self = self else { return }
+                    // Since search events may come back out of order, ignore older events
+                    guard searchIndex > self.displayedSearchIndex else { return }
+
+                    self.displayedSearchIndex = searchIndex
+                    self.meta = result.meta
+                    self.events = result.events
+
+                    // Refresh the table
+                    self.tableView.reloadData()
+
+                    // Loading is complete when last issued search index matches displayed search index
+                    if self.lastIssuedSearchIndex == self.displayedSearchIndex {
+                        self.loadingIndicatorView.stopAnimating()
+                    }
                 }
-            }
-            .catch { [weak self] _ in
-                self?.loadingIndicatorView.stopAnimating()
-            }
+                .catch { [weak self] _ in
+                    self?.loadingIndicatorView.stopAnimating()
+                }
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
